@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ux-stranger/tester-run-report",
+  "title": "UX Stranger tester run report",
+  "type": "object",
+  "required": ["task_id", "run", "goal", "claimed_success", "confirmation_seen", "stop_reason", "steps_taken", "steps", "hardest_moment", "overall_ease"],
+  "properties": {
+    "task_id": {"type": "string"},
+    "run": {"type": "string", "pattern": "^\\d+ of \\d+$"},
+    "mode": {"enum": ["standard", "lite"]},
+    "persona": {"type": "string"},
+    "goal": {"type": "string"},
+    "claimed_success": {"type": "boolean"},
+    "confirmation_seen": {"type": "boolean"},
+    "stop_reason": {"enum": ["done", "budget", "stuck", "broken"]},
+    "steps_taken": {"type": "integer", "minimum": 0},
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["n", "action", "confidence", "matched_expectation"],
+        "properties": {
+          "n": {"type": "integer", "minimum": 1},
+          "url": {"type": "string"},
+          "looking_for": {"type": "string"},
+          "expected": {"type": "string"},
+          "action": {"type": "string"},
+          "confidence": {"type": "integer", "minimum": 1, "maximum": 5},
+          "observed": {"type": "string"},
+          "matched_expectation": {"type": "boolean"},
+          "hesitation": {"type": "array", "items": {"type": "string"}},
+          "confusion": {"type": ["string", "null"]},
+          "error_seen": {"type": ["string", "null"]},
+          "screenshot": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "where_i_expected_it": {"type": ["string", "null"]},
+    "hardest_moment": {"type": "string"},
+    "suggested_fix_in_my_words": {"type": ["string", "null"]},
+    "overall_ease": {"type": "integer", "minimum": 1, "maximum": 5}
+  }
+}

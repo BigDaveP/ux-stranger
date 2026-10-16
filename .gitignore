@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.DS_Store
+# If you run ux-stranger on this repo itself
+ux-stranger/reports/

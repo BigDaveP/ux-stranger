@@ -1,0 +1,46 @@
+# ux-stranger task file — copy to <project>/ux-stranger/tasks.yaml
+# Rules: references/writing-tasks.md. `success_check` and `optimal_steps` are NEVER sent to the tester.
+
+app: "Bistro Demo — admin dashboard"
+base_url: "http://localhost:3000"
+credentials_env: UX_STRANGER_CREDENTIALS   # env var holding "email / password" of a TEST account; never commit real credentials
+runs_per_task: 3
+
+personas:
+  rushed_manager: >
+    Restaurant manager, 45, uses a phone and a few apps daily, impatient between
+    services, doesn't explore menus, reads quickly.
+  careful_admin: >
+    Office admin, comfortable with Google Workspace, careful, reads labels before clicking.
+
+tasks:
+  - id: add-employee
+    module: equipe
+    flow: equipe.add-employee
+    persona: rushed_manager
+    start_url: "/"
+    goal: >
+      Julie Martin commence lundi prochain à la succursale de Plateau comme serveuse.
+      Fais en sorte qu'elle soit inscrite dans le système.
+    success_check: "Employee 'Julie Martin' exists, location=Plateau, role=serveuse, start_date=next Monday"
+    optimal_steps: 7
+
+  - id: last-week-sales
+    module: ventes
+    flow: ventes.weekly-total
+    persona: careful_admin
+    start_url: "/"
+    goal: "Combien la succursale de Plateau a-t-elle vendu la semaine dernière ?"
+    success_check: "Tester's final answer contains the Plateau net sales for last week (±1%)"
+    answer_required: true
+    optimal_steps: 4
+
+  - id: fix-start-date
+    module: equipe
+    flow: equipe.edit-role
+    persona: rushed_manager
+    start_url: "/"
+    goal: >
+      Tu t'es trompé : Julie commence en fait mardi, pas lundi. Corrige ça.
+    success_check: "Julie Martin start_date = next Tuesday"
+    optimal_steps: 5

@@ -1,0 +1,13 @@
+{
+  "name": "ux-stranger",
+  "owner": { "name": "David Pigeon" },
+  "metadata": { "description": "UX Stranger: naive-agent usability testing for coding agents" },
+  "plugins": [
+    {
+      "name": "ux-stranger",
+      "source": "./",
+      "description": "Naive-agent usability testing: map the app, pick a flow, let a cheaper sub-agent try it in a browser, get a numbered friction report.",
+      "version": "0.1.0"
+    }
+  ]
+}

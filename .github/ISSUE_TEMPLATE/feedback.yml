@@ -1,0 +1,33 @@
+name: Field report / bug
+description: Tell us how a test went, good or bad
+labels: ["feedback"]
+body:
+  - type: dropdown
+    id: host
+    attributes:
+      label: Host
+      options: [Claude Code, Codex, Cursor, Other]
+    validations: { required: true }
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Mode
+      options: [standard, lite-check, panel, all (one-shot)]
+    validations: { required: true }
+  - type: input
+    id: model
+    attributes:
+      label: Tester model
+      placeholder: e.g. haiku, gpt-5.4-mini
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What worked, what didn't, what you expected instead.
+    validations: { required: true }
+  - type: textarea
+    id: excerpt
+    attributes:
+      label: Report excerpt (anonymized)
+      description: Remove client names, URLs, credentials and personal data.
+      render: markdown
