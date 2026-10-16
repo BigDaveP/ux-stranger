@@ -51,7 +51,8 @@ You need a browser MCP for the tester. [Playwright MCP](https://github.com/micro
 ### Claude Code (plugin: skill + sub-agent in one step)
 
 ```bash
-claude plugin install ux-stranger --marketplace BigDaveP/ux-stranger
+claude plugin marketplace add BigDaveP/ux-stranger
+claude plugin install ux-stranger@ux-stranger
 claude mcp add playwright -- npx @playwright/mcp@latest
 ```
 

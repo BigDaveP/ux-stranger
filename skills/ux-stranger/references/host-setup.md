@@ -5,7 +5,8 @@ The skill itself (`SKILL.md` + `references/` + `templates/`) is the same everywh
 **Quickest for Claude Code:** install the plugin from GitHub. It brings the skill and the `ux-tester` sub-agent in one step, so you can skip sections 1 and 2:
 
 ```bash
-claude plugin install ux-stranger --marketplace BigDaveP/ux-stranger
+claude plugin marketplace add BigDaveP/ux-stranger
+claude plugin install ux-stranger@ux-stranger
 ```
 
 ## 1. Install the skill folder
