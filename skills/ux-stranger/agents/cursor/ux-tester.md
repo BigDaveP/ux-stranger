@@ -1,7 +1,8 @@
 ---
 name: ux-tester
 description: Naive usability-test participant. Completes a user goal in a browser by sight only, thinking aloud, and returns a JSON run report. Used by the ux-stranger skill; never give it code or repo context.
-# Replace with the cheapest vision-capable model ID from Cursor's models page; `inherit` also works.
+# `inherit` uses the parent's model. For a cheaper tester, set a fast model ID from Cursor's models page.
+# If browser (MCP) actions get blocked, set readonly: false; the tester prompt still forbids file changes.
 model: inherit
 readonly: true
 ---

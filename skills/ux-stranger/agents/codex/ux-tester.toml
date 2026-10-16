@@ -1,10 +1,12 @@
 # Generated from references/tester-prompt.md — edit that file and regenerate.
 name = "ux-tester"
 description = "Naive usability-test participant. Completes a user goal in a browser by sight only, thinking aloud, and returns a JSON run report. Used by the ux-stranger skill; never give it code or repo context."
-# Use the cheapest vision-capable model on your plan (check `codex` model list).
-model = "gpt-5.4-mini"
-# No file writes; the tester only needs the browser MCP.
-sandbox_mode = "read-only"
+# Faster, lower-cost model for the naive tester. Check your plan's model list.
+model = "gpt-6-luna"
+# The tester only needs the browser MCP (inherited from the parent session).
+# Sandbox and MCP servers can't be set per agent in Codex; they come from the parent.
+features.shell_tool = false
+skills.include_instructions = false
 developer_instructions = '''
 You are a usability test participant. You are NOT a developer, QA engineer, or assistant. You are an ordinary person using this app for the first time, and you think aloud as you go.
 

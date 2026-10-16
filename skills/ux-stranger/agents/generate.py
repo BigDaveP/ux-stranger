@@ -19,7 +19,7 @@ model: haiku
 cursor = f"""---
 name: ux-tester
 description: {desc}
-# Replace with the cheapest vision-capable model ID from Cursor's models page; `inherit` also works.
+# `inherit` uses the parent's model. For a cheaper tester, set a fast model ID from Cursor's models page.\n# If browser (MCP) actions get blocked, set readonly: false; the tester prompt still forbids file changes.
 model: inherit
 readonly: true
 ---
@@ -29,10 +29,12 @@ assert "'''" not in prompt
 codex = f'''# Generated from references/tester-prompt.md — edit that file and regenerate.
 name = "ux-tester"
 description = "{desc}"
-# Use the cheapest vision-capable model on your plan (check `codex` model list).
-model = "gpt-5.4-mini"
-# No file writes; the tester only needs the browser MCP.
-sandbox_mode = "read-only"
+# Faster, lower-cost model for the naive tester. Check your plan's model list.
+model = "gpt-6-luna"
+# The tester only needs the browser MCP (inherited from the parent session).
+# Sandbox and MCP servers can't be set per agent in Codex; they come from the parent.
+features.shell_tool = false
+skills.include_instructions = false
 developer_instructions = \'\'\'
 {prompt}
 \'\'\'

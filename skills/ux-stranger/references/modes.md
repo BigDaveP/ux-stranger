@@ -44,9 +44,9 @@ A **tester profile** = one model + one persona. Use 2–4 profiles and vary both
 1. **Models.** Use what is available natively, without API keys:
    - Claude Code: `ux-tester` (Haiku). Add a second Claude profile by spawning the same prompt on `sonnet` only if no other vendor is available. A stronger model finding a problem is still a strong signal.
    - Other vendors via CLIs **already installed and logged in** on the machine, called from the shell with the same brief and the content of `references/tester-prompt.md`:
-     - Codex: `codex exec --model <mini model> "<prompt + brief>"`
-     - Cursor: its agent CLI in non-interactive mode, if installed.
-     Check `which codex` / the Cursor CLI first. If one is missing or not logged in, say so in one line and continue with the profiles you have. Never ask for API keys.
+     - Codex: `codex exec --model gpt-6-luna "<prompt + brief>"` (Playwright MCP must be in `~/.codex/config.toml`).
+     - Cursor: `agent -p --model <fast model id> --approve-mcps --output-format text "<prompt + brief>"`.
+     Check `which codex` / `which agent` first, and `agent status` for Cursor's login. Headless Cursor runs may require an API key. If a CLI is missing, not logged in, or asks for a key, say so in one line and continue with the profiles you have. Never ask the human for API keys.
    - Each external tester needs its own browser MCP configured in that host (see `host-setup.md`).
 2. **Personas.** Give each profile a different persona from the task file. If the file has only one, write a contrasting second one (e.g. hurried vs careful).
 

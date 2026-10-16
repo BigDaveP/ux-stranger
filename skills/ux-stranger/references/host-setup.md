@@ -33,8 +33,8 @@ Cursor also reads `.claude/agents/`, but its `model` values differ. Keep the Cur
 
 Use the **cheapest capable model with vision** your plan offers. The model IDs in the agent files are defaults. Check them against your host's current model list:
 - Claude Code: `haiku` (alias).
-- Codex: a `-mini` GPT model.
-- Cursor: any fast/cheap model ID from Cursor's models page. `inherit` works if nothing else is available; the isolation rules still make the test meaningful.
+- Codex: `gpt-6-luna` (the faster, lower-cost model in the Codex docs).
+- Cursor: `inherit` by default (your current model). Set a faster model ID from Cursor's models page for a cheaper tester; the isolation rules make the test meaningful either way.
 
 If the tester model fails on *trivial* steps (can't click a clearly labelled button), it is too weak to be informative. Step up one tier.
 
@@ -53,13 +53,15 @@ claude mcp add playwright -- npx @playwright/mcp@latest
 command = "npx"
 args = ["@playwright/mcp@latest"]
 ```
-The Codex sandbox may block launching a browser or reaching `localhost`. If the tester can't open the page, allow network access for the session or test against a deployed preview URL.
+Codex sub-agents inherit the parent session's MCP servers, sandbox and approval settings (they can't be set in the agent file). The tester file turns off the shell tool so it can only use the browser. If the browser can't start or reach `localhost`, allow network access for the session or test against a deployed preview URL.
+
+Invoke the skill with `$ux-stranger` (or from `/skills`).
 
 **Cursor**: `.cursor/mcp.json`
 ```json
 { "mcpServers": { "playwright": { "command": "npx", "args": ["@playwright/mcp@latest"] } } }
 ```
-Cursor's built-in browser also works if your version exposes it to sub-agents.
+Local Cursor sub-agents inherit the parent's MCP servers. The tester is `readonly: true`; if its browser actions get blocked, set `readonly: false` in `.cursor/agents/ux-tester.md`. Cursor's built-in browser also works if your version exposes it to sub-agents. Invoke the skill with `/ux-stranger`.
 
 Recommended: a fresh, isolated browser profile per run (Playwright MCP `--isolated`), so a previous run's state doesn't leak into the next.
 

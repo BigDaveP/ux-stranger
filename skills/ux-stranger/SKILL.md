@@ -24,7 +24,7 @@ Don't test the whole app in one shot. Unless the command says `all` or no human 
 4. **Run** the workflow below on those tasks.
 5. **Report**, then ask: fix now, next module, or stop.
 
-Commands: `/ux-stranger` (step-by-step), `/ux-stranger map` (map only), `/ux-stranger <module>` (jump to that module), `/ux-stranger all` (one-shot, no questions). Each combines with a mode: `/ux-stranger lite-check equipe`.
+Commands: `/ux-stranger` (step-by-step), `/ux-stranger map` (map only), `/ux-stranger <module>` (jump to that module), `/ux-stranger all` (one-shot, no questions). Each combines with a mode: `/ux-stranger lite-check equipe`. In Codex the prefix is `$` instead of `/` (`$ux-stranger lite-check equipe`).
 
 With no human in the loop (CI, scheduled or PR pipeline), run one-shot on the modules changed in the branch and say so in the report.
 
