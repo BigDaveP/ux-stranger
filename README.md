@@ -60,22 +60,29 @@ Or inside a session: `/plugin marketplace add BigDaveP/ux-stranger`, then `/plug
 
 ### Codex
 
+From your project root:
+
 ```bash
 git clone https://github.com/BigDaveP/ux-stranger /tmp/ux-stranger
+mkdir -p .agents/skills .codex/agents
 cp -r /tmp/ux-stranger/skills/ux-stranger .agents/skills/
-mkdir -p .codex/agents && cp .agents/skills/ux-stranger/agents/codex/ux-tester.toml .codex/agents/
+cp .agents/skills/ux-stranger/agents/codex/ux-tester.toml .codex/agents/
 ```
 
-Then add Playwright MCP to `~/.codex/config.toml` (see [`host-setup.md`](skills/ux-stranger/references/host-setup.md)).
+Then add Playwright MCP to `~/.codex/config.toml` (see [`host-setup.md`](skills/ux-stranger/references/host-setup.md)). In Codex, skills are invoked with `$`: type `$ux-stranger` (or pick it from `/skills`).
 
 ### Cursor
 
+From your project root:
+
 ```bash
-npx skills add BigDaveP/ux-stranger        # or copy skills/ux-stranger into .agents/skills/
-mkdir -p .cursor/agents && cp .agents/skills/ux-stranger/agents/cursor/ux-tester.md .cursor/agents/
+git clone https://github.com/BigDaveP/ux-stranger /tmp/ux-stranger
+mkdir -p .agents/skills .cursor/agents
+cp -r /tmp/ux-stranger/skills/ux-stranger .agents/skills/
+cp .agents/skills/ux-stranger/agents/cursor/ux-tester.md .cursor/agents/
 ```
 
-Set the tester `model` in `.cursor/agents/ux-tester.md` to a fast model ID. Then add Playwright MCP in `.cursor/mcp.json`.
+Then add Playwright MCP in `.cursor/mcp.json`. The tester uses your current model (`model: inherit`); set a faster model ID in `.cursor/agents/ux-tester.md` for a cheaper tester. In Cursor chat, type `/ux-stranger`.
 
 ## Use
 
@@ -88,7 +95,7 @@ Set the tester `model` in `.cursor/agents/ux-tester.md` to a fast model ID. Then
 | `/ux-stranger lite-check …` | Cheap mode: ≤ 3 tasks, 1 run each, fewer screenshots |
 | `/ux-stranger panel …` | Several models × personas, consensus. Shows a usage estimate first |
 
-Or just ask: *"test the UX of the dashboard you just built"*.
+In Codex, use `$ux-stranger` instead of `/ux-stranger` (same arguments). Or just ask: *"test the UX of the dashboard you just built"*.
 
 Files it creates in your project: `ux-stranger/map.yaml`, `ux-stranger/tasks.yaml`, `ux-stranger/reports/`.
 
@@ -100,8 +107,18 @@ Files it creates in your project: `ux-stranger/map.yaml`, `ux-stranger/tasks.yam
 | Claude Code plugin install | ✅ Validated |
 | lite-check mode | 🟡 Written, lightly tested |
 | panel mode (multi-vendor via installed CLIs) | 🟡 Written, not yet tested |
-| Codex | 🟡 Not yet tested. Model ID and sandbox/browser access may need tweaks |
+| Codex | 🟡 Not yet tested. Config follows the current Codex docs; browser access depends on your sandbox settings |
 | Cursor | 🟡 Not yet tested. Set the tester model |
+
+## What it runs and sends
+
+UX Stranger has no hooks, no bundled MCP server and no scripts that run on install. It is instructions (a skill) plus a sub-agent definition. When you use it:
+
+- **Browser.** The tester drives a browser through the Playwright MCP server **you** configure, against the URL **you** provide. It types only the data in the task and the test credentials you supply.
+- **Model calls.** The tester runs on your agent's own model provider (e.g. Haiku in Claude Code), through your existing plan. Nothing is sent to any other service by the plugin.
+- **Panel mode only (opt-in).** If `codex` or Cursor's `agent` CLI is already installed and logged in on your machine, the builder agent may run them to get a second opinion. The tester prompt and task brief are then sent to that vendor through its CLI. The skill asks before running a panel.
+- **Credentials.** Read from an environment variable you set (`UX_STRANGER_CREDENTIALS`), used only to log into the app under test, and never written to reports.
+- **Files written.** Only in your project: `ux-stranger/map.yaml`, `ux-stranger/tasks.yaml` and `ux-stranger/reports/`. No telemetry, no network calls of its own.
 
 ## Safety
 
