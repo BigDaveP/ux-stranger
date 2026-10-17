@@ -1,10 +1,14 @@
 {
   "name": "ux-stranger",
+  "displayName": "UX Stranger",
   "version": "0.1.0",
   "description": "Usability-test the UI your agent just built: a naive, cheaper sub-agent tries real user goals in a browser without seeing the code, then reports friction to fix.",
   "author": { "name": "David Pigeon" },
   "homepage": "https://github.com/BigDaveP/ux-stranger",
   "repository": "https://github.com/BigDaveP/ux-stranger",
+  "documentationUrl": "https://github.com/BigDaveP/ux-stranger#readme",
+  "supportUrl": "https://github.com/BigDaveP/ux-stranger/issues",
+  "privacyPolicyUrl": "https://github.com/BigDaveP/ux-stranger/blob/main/PRIVACY.md",
   "license": "MIT",
   "keywords": ["ux", "usability", "testing", "playwright", "subagent", "skills"]
 }
