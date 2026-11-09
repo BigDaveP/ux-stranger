@@ -1,7 +1,7 @@
 {
   "name": "ux-stranger",
   "displayName": "UX Stranger",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Usability-test the UI your agent just built: a naive, cheaper sub-agent tries real user goals in a browser without seeing the code, then reports friction to fix.",
   "author": { "name": "David Pigeon" },
   "homepage": "https://github.com/BigDaveP/ux-stranger",

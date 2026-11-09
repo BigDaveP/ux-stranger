@@ -2,7 +2,7 @@
 
 *Let a stranger try your app before your users do.*
 
-![status: experimental](https://img.shields.io/badge/status-experimental-orange) ![version](https://img.shields.io/badge/version-0.1.0-blue) ![license: MIT](https://img.shields.io/badge/license-MIT-green)
+![status: experimental](https://img.shields.io/badge/status-experimental-orange) ![version](https://img.shields.io/badge/version-0.1.1-blue) ![license: MIT](https://img.shields.io/badge/license-MIT-green)
 
 > **Work in progress.** Used on real projects, but young. Expect rough edges, and please [open an issue](../../issues/new/choose) with what worked and what didn't.
 
@@ -46,17 +46,18 @@ Flags include `TASK_FAILED`, `FALSE_SUCCESS` (the tester thinks it worked and it
 
 ## Install
 
-You need a browser MCP for the tester. [Playwright MCP](https://github.com/microsoft/playwright-mcp) works everywhere, and the server must be named `playwright`.
+You need a browser MCP for the tester. [Playwright MCP](https://github.com/microsoft/playwright-mcp) works everywhere, and the server must be named `playwright`. The Claude Code plugin bundles it, so there's nothing extra to install there, cloud sessions included.
 
 ### Claude Code (plugin: skill + sub-agent in one step)
 
 ```bash
 claude plugin marketplace add BigDaveP/ux-stranger
 claude plugin install ux-stranger@ux-stranger
-claude mcp add playwright -- npx @playwright/mcp@latest
 ```
 
 Or inside a session: `/plugin marketplace add BigDaveP/ux-stranger`, then `/plugin install ux-stranger@ux-stranger`.
+
+Claude Code on the web / cloud sessions: enable the plugin and the bundled Playwright MCP starts on its own. Using the skill without the plugin? See [Cloud and remote sessions](skills/ux-stranger/references/host-setup.md#3-give-the-tester-a-browser).
 
 ### Codex
 
@@ -112,9 +113,9 @@ Files it creates in your project: `ux-stranger/map.yaml`, `ux-stranger/tasks.yam
 
 ## What it runs and sends
 
-UX Stranger has no hooks, no bundled MCP server and no scripts that run on install. It is instructions (a skill) plus a sub-agent definition. When you use it:
+UX Stranger has no hooks and no scripts that run on install. It is instructions (a skill), a sub-agent definition and, in the Claude Code plugin, a declaration of Microsoft's [Playwright MCP](https://github.com/microsoft/playwright-mcp) server (`npx @playwright/mcp@latest --isolated`), which your agent starts when the plugin is enabled. When you use it:
 
-- **Browser.** The tester drives a browser through the Playwright MCP server **you** configure, against the URL **you** provide. It types only the data in the task and the test credentials you supply.
+- **Browser.** The tester drives a browser through the Playwright MCP server (bundled with the plugin, or configured by you), against the URL **you** provide. It types only the data in the task and the test credentials you supply.
 - **Model calls.** The tester runs on your agent's own model provider (e.g. Haiku in Claude Code), through your existing plan. Nothing is sent to any other service by the plugin.
 - **Panel mode only (opt-in).** If `codex` or Cursor's `agent` CLI is already installed and logged in on your machine, the builder agent may run them to get a second opinion. The tester prompt and task brief are then sent to that vendor through its CLI. The skill asks before running a panel.
 - **Credentials.** Read from an environment variable you set (`UX_STRANGER_CREDENTIALS`), used only to log into the app under test, and never written to reports.

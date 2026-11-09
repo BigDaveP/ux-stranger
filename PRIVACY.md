@@ -4,7 +4,7 @@ UX Stranger is a set of instructions (a skill) and a sub-agent definition. It ha
 
 ## What happens when you use it
 
-- **Your app.** The tester opens the URL you provide in a browser you configure (Playwright MCP) and types only the task data and the test credentials you supply.
+- **Your app.** The tester opens the URL you provide in a local browser driven by Playwright MCP (declared by the Claude Code plugin, or configured by you; it is downloaded from npm and runs on your machine or session container) and types only the task data and the test credentials you supply.
 - **Your model provider.** The tester runs on the model provider of the agent you already use (for example Claude in Claude Code). What it sees on screen is processed by that provider under that provider's own terms and privacy policy.
 - **Panel mode (optional).** If you choose panel mode and have the Codex or Cursor CLI installed and logged in, the task brief and tester prompt are sent to that vendor through its CLI, under its own terms. The skill asks before running a panel.
 - **Local files.** Maps, tasks and reports are written only to your project (`ux-stranger/`). Reports can quote what was on screen. Use test data, and add `ux-stranger/reports/` to `.gitignore` if needed.

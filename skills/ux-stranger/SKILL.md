@@ -41,7 +41,8 @@ Where this file and `modes.md` differ, `modes.md` wins for the chosen mode.
 ## Prerequisites
 
 - A running URL for the UI (local dev server, preview deploy, staging). Seed it with realistic data — empty states hide most problems.
-- A browser tool the sub-agent can use (Playwright MCP recommended; works in Claude Code, Codex and Cursor). See `references/host-setup.md`.
+- A browser tool the sub-agent can use (Playwright MCP recommended; works in Claude Code, Codex and Cursor). See `references/host-setup.md`. The Claude Code plugin bundles it: its tools appear as `mcp__plugin_ux-stranger_playwright__*`, or as `mcp__playwright__*` if the user configured the server themselves. Either one counts.
+- **No browser tool, no test.** If neither is available, stop before running anything and tell the human, with the fix from `host-setup.md` (section "Cloud and remote sessions" for cloud containers). Never build a substitute browser tool (your own Playwright script, curl, a headless wrapper) and pass it to the tester: you would be writing the tester's eyes yourself, which breaks the isolation the test relies on. Only do it if the human explicitly asks, and label the report as such.
 - The `ux-tester` sub-agent installed for your host (files in `agents/`). When installed as a Claude Code plugin, it may be listed as `ux-stranger:ux-tester`. If it is not installed, spawn a generic sub-agent and pass it the full contents of `references/tester-prompt.md` as its instructions.
 - Test credentials if the app needs login, for a **test account only**. Read them from the environment variable named in `credentials_env` (default `UX_STRANGER_CREDENTIALS`), never from a committed file. Never write them into reports. Logging in is not the thing under test unless you say so.
 - Add `ux-stranger/reports/` to the project's `.gitignore` unless the team wants reports versioned. Reports quote what the tester saw on screen, which can include real data.

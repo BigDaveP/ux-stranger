@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1 — 2026-11-09
+
+- Claude Code plugin now bundles Playwright MCP (`.mcp.json`), so the tester has a browser in cloud sessions too
+- Tester accepts both tool prefixes (`mcp__playwright__*` and `mcp__plugin_ux-stranger_playwright__*`)
+- Skill: stop and explain when no browser tool is available, instead of building a substitute
+- Docs: cloud / remote session setup
+
 ## 0.1.0 — 2026-10-16 (experimental)
 
 First public version.

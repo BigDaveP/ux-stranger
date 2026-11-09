@@ -9,6 +9,8 @@ claude plugin marketplace add BigDaveP/ux-stranger
 claude plugin install ux-stranger@ux-stranger
 ```
 
+The plugin also bundles Playwright MCP (`.mcp.json` at the plugin root, `npx @playwright/mcp@latest --isolated`), so the browser is set up too, including in cloud sessions. If you already added your own `playwright` server, Claude Code keeps one of the two; the tester accepts either.
+
 ## 1. Install the skill folder
 
 | Host | Project-level | User-level |
@@ -43,9 +45,22 @@ If the tester model fails on *trivial* steps (can't click a clearly labelled but
 Playwright MCP works in all three hosts.
 
 **Claude Code**
+
+Nothing to do with the plugin install: Playwright MCP is bundled. Without the plugin (skill copied by hand):
 ```bash
-claude mcp add playwright -- npx @playwright/mcp@latest
+claude mcp add playwright -- npx @playwright/mcp@latest --isolated
 ```
+
+**Cloud and remote sessions** (Claude Code on the web, the mobile app, GitHub Actions)
+
+The container starts fresh each session, so anything you added with `claude mcp add` on your own machine is not there. Chromium is preinstalled and `npx @playwright/mcp@latest` runs as is; the server only needs to be *declared*:
+- Plugin enabled in the session → nothing to do, the bundled server starts.
+- Skill only (no plugin) → add this line to the environment's **setup script** (cloud environment settings), which runs before each session:
+  ```bash
+  claude mcp add --scope user playwright -- npx -y @playwright/mcp@latest --isolated
+  ```
+  Or commit a `.mcp.json` declaring the same `playwright` server at the root of the project under test.
+- The network policy must allow the npm registry (it does by default) for `npx` to download the server.
 
 **Codex**: `~/.codex/config.toml`
 ```toml
