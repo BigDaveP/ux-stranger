@@ -6,7 +6,7 @@ Pick the mode from the invocation argument (`/ux-stranger`, `/ux-stranger lite-c
 |---|---|---|---|---|
 | Purpose | Cheap smoke test on smaller plans | Normal check after a UI change | High-stakes flows, before release | Does the site communicate the offer to the target personas? (public pages) |
 | Tasks | max 3, primary jobs only | 3–8 | 3–8 | none: first impression + free exploration |
-| Runs per task | 1 | 3 | 2 per tester profile (see below) | 1 per target persona (1–3) + optional outsider |
+| Runs per task | 1 | 3 | 2 per tester profile (see below) | 1 per target persona (1–3, up to 5 on request) + outsider when the site is technical/B2B |
 | Tester profiles | 1 | 1 | 2–4 (model × persona) | 1 |
 | Perception | accessibility snapshot first, screenshots only at checkpoints | screenshot every step | screenshot every step | one screenshot for the first impression, then screenshot every step |
 | Think-aloud | compact | full | full | full (exploration only) |

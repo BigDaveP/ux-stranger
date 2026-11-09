@@ -7,6 +7,7 @@
 - New flags: `MESSAGE_MISREAD`, `MESSAGE_MISSED`, `MESSAGE_LATE`, `FIT_REJECTED`, `FIT_HESITANT`, `TONE_MISMATCH`, `JARGON`; verdict `CLEAR` / `NEEDS WORK`
 - Map modules get `kind: public | app`
 - `scripts/check.py` consistency check for contributors
+- Comprehension framing asks one question (which customers to attract) and one approval; the builder generates triggers, arrivals, leave reasons, viewports and the outsider choice
 - Bundled Playwright MCP pinned to 0.0.85, writes screenshots and snapshots to `ux-stranger/.playwright-mcp/`
 
 ## 0.1.1 — 2026-11-09

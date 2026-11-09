@@ -254,10 +254,22 @@ def docs_accuracy():
     return "; ".join(errs) or None
 
 
+
+def framing_is_light():
+    text = (REF / "comprehension.md").read_text()
+    framing = text.split("## 3. Framing", 1)[1].split("## 4.", 1)[0]
+    errs = []
+    if "one question" not in framing.lower():
+        errs.append("framing does not limit the human to one question")
+    for leftover in ["What would make them leave", "How do they usually arrive", "What problem or need brings them"]:
+        if leftover in framing:
+            errs.append(f"framing still asks: {leftover!r}")
+    return "; ".join(errs) or None
+
 CHECKS = [json_parse, yaml_parse, agents_in_sync, files_table, versions,
           comprehension_wired, comprehension_flags, comprehension_schema,
           positioning_template, ci_rule_present, unattended_rule_wired, mcp_pinned,
-          tester_prompt_comprehension_rules, facts_from_human, docs_accuracy]
+          tester_prompt_comprehension_rules, facts_from_human, docs_accuracy, framing_is_light]
 
 
 def main():

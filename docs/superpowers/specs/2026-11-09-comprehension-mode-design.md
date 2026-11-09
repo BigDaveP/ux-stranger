@@ -41,6 +41,8 @@ Rules for the builder:
 
 ### 4.1 Framing (with the human, mandatory)
 
+> **Revised after the first real test (2026-11-09):** the six-question interview below asked too much. The human now answers **one question** (which customers to attract, multiple choice built from the sources) and gives **one approval**. The builder generates trigger problems, arrivals, `leaves_if`, viewports (alternating desktop/mobile), the tone (from design docs) and the outsider decision; factual values absent from the sources are not asked up front but at fix time. `references/comprehension.md` §3 is authoritative.
+
 If `ux-stranger/positioning.yaml` exists and has `approved: true`, reuse it and show a one-line summary ("Using positioning from 2026-11-09: 2 personas, 6 points. Edit?"). Otherwise:
 
 1. Look for non-site sources in the repo (brief, pitch, `CLAUDE.md`, `docs/`, product notes). Pre-fill answers from them, citing the file.

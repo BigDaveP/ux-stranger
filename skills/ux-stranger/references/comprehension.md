@@ -20,26 +20,27 @@ Use it on public pages: landing, home, pricing, about, features, marketing sites
 - Offered by step-by-step mode: when the map has `kind: public` modules, add one line to the step-2 question (see `step-by-step.md`).
 - **Unattended runs** (`all`, CI, no human): run this mode only if `ux-stranger/positioning.yaml` exists with `approved: true`. Otherwise skip it and add one line to the report: "Comprehension mode skipped: no approved positioning.yaml (needs a human once)." Never invent personas without a human.
 
-## 3. Framing (with the human)
+## 3. Framing (one question, then one approval)
 
-If `ux-stranger/positioning.yaml` exists with `approved: true`, reuse it. Show one line ("Using positioning approved on 2026-11-09: 2 personas, 6 points. Edit anything?") and go to step 4.
+Keep the human's effort to **one question and one "go"**. You generate everything else as hypotheses; the human corrects the table instead of answering a questionnaire.
+
+If `ux-stranger/positioning.yaml` exists with `approved: true`, reuse it. Show one line ("Using positioning approved on 2026-11-09: 3 personas, 6 points. Edit anything?") and go to step 4.
 
 Otherwise:
 
-1. Look for non-site sources (section 1). Pre-fill what you can, with the source file.
-2. Ask the human, **in one message**, only the questions still open:
-   1. Who is your ideal customer (role, situation)?
-   2. What problem or need brings them to the site?
-   3. How do they usually arrive (search for what, ad, referral, social post…)?
-   4. What would make them leave or hesitate?
-   5. What should the site feel like, in 3 words?
-   6. Optional: what must a visitor have understood when they leave? (If skipped, you draft it.)
-3. Draft **1–3 target personas**: who, situation, `arrival` (concrete: "searched 'restaurant salle privée Plateau' on Google"), `leaves_if`, `viewport` (`mobile` when that audience mostly browses on a phone, e.g. restaurants, local services).
-4. Draft the **expected message** as points, each `critical` or `important`. Defaults: what it is, for whom, the offer, price or pricing model, proof / trust, next step. Add business-specific points (e.g. "private room up to 14"), remove what doesn't apply.
-   **Factual points** (a price, a capacity, a delay, a guarantee, a number) must come from the human or a cited non-site source, with `source:` on the point. Never draft a value yourself: write the point without it ("the group price is visible") and add the question to the one-message list ("What price should visitors see for groups?").
-5. Run the guardrail (section 1).
-6. **Outsider (optional, off by default).** Offer it when the site is B2B, technical or jargon-heavy: "Add an outsider (someone outside the niche) to check that the basics are understandable? +1 short run." It only does the first impression.
-7. Show personas, points, tone and outsider choice in chat. On approval, write `ux-stranger/positioning.yaml` (template: `templates/positioning.example.yaml`) with `approved: true` and `approved_at`.
+1. **Read the non-site sources** (section 1): brief, `PRODUCT.md`, pitch, `CLAUDE.md`, `docs/`. Note what they say about the audience, the offer, the tone, prices, and any open decision.
+2. **Ask one question only**, and only if the sources don't already answer it clearly: *"Which customers do you want this site to attract? (1–4 types; e.g. …)"*. Offer 3–4 concrete options built from the sources, multiple choice, plus "other". When the sources flag the audience as an open decision, or when the portfolio leans to one sector (e.g. mostly restaurants), say so in one line: picking that sector because the site shows it would make the test circular.
+3. **Generate the rest yourself**, without asking:
+   - **Personas**: one per customer type the human picked (default 1–3; up to 5 if they ask for more). For each: a name, age, role, company size or situation, a concrete **trigger problem** (why they are looking now), a simulated **arrival** (a realistic search query, referral, social post or ad, varied across personas), `leaves_if` (what plausibly makes this kind of visitor leave, e.g. no proof in their situation, no idea of budget, jargon, looks too big or too small for them), and a **viewport**: alternate `desktop` and `mobile` across personas so both are covered.
+   - **Expected message**: from the sources, with `source:` on each point (section 4 of this step).
+   - **Visual tone**: 3 words from the design or brand docs (e.g. `DESIGN.md`); if there are none, infer them from the audience and mark them "to confirm".
+   - **Outsider**: on when the site uses technical or trendy terms (AI, automation, SaaS, growth…) or is B2B; off otherwise. Your call, shown in the table.
+4. **Expected message points**, each `critical` or `important`. Defaults: what it is, for whom, the offer, proof / trust, how to get a price, next step. Add business-specific points, remove what doesn't apply.
+   **Factual points** (a price, a capacity, a delay, a guarantee, a number) must come from the human or a cited non-site source, with `source:` on the point. Search the sources for them first. If nothing is found, never draft a value and don't add a question now: keep the point without the value ("the visitor understands how to get a price"), mark it `source: none, ask at fix time`, and let the fix ask the human for the real figure if the point fails.
+5. **Run the guardrail** (section 1) and note the result in one line under the table.
+6. **One approval message**: a compact table (persona · trigger · arrival · viewport), the expected points with their sources, the tone, the outsider choice, the number of runs, and *"Go, or tell me what to change."* On "go", write `ux-stranger/positioning.yaml` (template: `templates/positioning.example.yaml`) with `approved: true` and `approved_at`.
+
+Never ask the human what would make visitors leave, how they arrive, or what their problem is: those are your hypotheses to generate, and the test exists to check them against the site.
 
 ## 4. Run the testers
 
