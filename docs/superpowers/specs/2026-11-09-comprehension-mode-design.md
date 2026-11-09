@@ -198,9 +198,9 @@ Add an "If MODE is comprehension" section: the two phases, the no-scroll rule fo
 
 Then run `agents/generate.py` to refresh the Claude, Cursor and Codex agents. No new sub-agent.
 
-### 6.4 `references/report-schema.json` (edited)
+### 6.4 `references/comprehension-report-schema.json` (new)
 
-Add a second schema, `ux-stranger/comprehension-run-report`, for the tester output in this mode:
+Add a separate schema file, `references/comprehension-report-schema.json` (`$id: ux-stranger/comprehension-run-report`), for the tester output in this mode:
 
 ```json
 {
