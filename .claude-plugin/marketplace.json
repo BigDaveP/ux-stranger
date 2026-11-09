@@ -7,7 +7,7 @@
       "name": "ux-stranger",
       "source": "./",
       "description": "Naive-agent usability testing: map the app, pick a flow, let a cheaper sub-agent try it in a browser, get a numbered friction report.",
-      "version": "0.1.1"
+      "version": "0.2.0"
     }
   ]
 }

@@ -2,7 +2,7 @@
 
 *Let a stranger try your app before your users do.*
 
-![status: experimental](https://img.shields.io/badge/status-experimental-orange) ![version](https://img.shields.io/badge/version-0.1.1-blue) ![license: MIT](https://img.shields.io/badge/license-MIT-green)
+![status: experimental](https://img.shields.io/badge/status-experimental-orange) ![version](https://img.shields.io/badge/version-0.2.0-blue) ![license: MIT](https://img.shields.io/badge/license-MIT-green)
 
 > **Work in progress.** Used on real projects, but young. Expect rough edges, and please [open an issue](../../issues/new/choose) with what worked and what didn't.
 
@@ -14,7 +14,8 @@ Where it hesitates, takes wrong turns, or gives up, real users probably will too
 
 - **Native, no API keys.** Runs inside the agent you already use (Claude Code, Codex, Cursor) with your existing plan.
 - **Step-by-step.** Map the app → pick a module or flow → approve the tasks → test → read the report in the chat → fix / next module / stop.
-- **Three modes.** `lite-check` (cheap smoke test), `standard`, `panel` (several models and personas, with consensus).
+- **Four modes.** `lite-check` (cheap smoke test), `standard`, `panel` (several models and personas, with consensus), and `comprehension` for landing pages and public sites.
+- **Does your site get its message across?** In `comprehension` mode, the tester plays the customers *you* want to attract (defined with you, never guessed from the current site), forms a first impression, explores, and says what it understood. The builder compares that with your intended message in a table (understood at first glance / late / misread / missed), checks whether the look fits your niche, and proposes copy fixes. It never invents facts: a missing price becomes a question to you.
 
 ## How it works
 
@@ -95,10 +96,11 @@ Then add Playwright MCP in `.cursor/mcp.json`. The tester uses your current mode
 | `/ux-stranger all` | One-shot, no questions (also the default in CI/unattended runs) |
 | `/ux-stranger lite-check …` | Cheap mode: ≤ 3 tasks, 1 run each, fewer screenshots |
 | `/ux-stranger panel …` | Several models × personas, consensus. Shows a usage estimate first |
+| `/ux-stranger comprehension [page]` | Landing / public site: do your target customers understand what you offer? Comprehension table + copy fixes. Also offered automatically when the map finds public pages |
 
 In Codex, use `$ux-stranger` instead of `/ux-stranger` (same arguments). Or just ask: *"test the UX of the dashboard you just built"*.
 
-Files it creates in your project: `ux-stranger/map.yaml`, `ux-stranger/tasks.yaml`, `ux-stranger/reports/`.
+Files it creates in your project: `ux-stranger/map.yaml`, `ux-stranger/tasks.yaml`, `ux-stranger/positioning.yaml` (comprehension mode: your personas and intended message), `ux-stranger/reports/`.
 
 ## Status
 
@@ -108,6 +110,7 @@ Files it creates in your project: `ux-stranger/map.yaml`, `ux-stranger/tasks.yam
 | Claude Code plugin install | ✅ Validated |
 | lite-check mode | 🟡 Written, lightly tested |
 | panel mode (multi-vendor via installed CLIs) | 🟡 Written, not yet tested |
+| comprehension mode | 🟡 Written, tested on a fixture page |
 | Codex | 🟡 Not yet tested. Config follows the current Codex docs; browser access depends on your sandbox settings |
 | Cursor | 🟡 Not yet tested. Set the tester model |
 
@@ -119,7 +122,7 @@ UX Stranger has no hooks and no scripts that run on install. It is instructions 
 - **Model calls.** The tester runs on your agent's own model provider (e.g. Haiku in Claude Code), through your existing plan. Nothing is sent to any other service by the plugin.
 - **Panel mode only (opt-in).** If `codex` or Cursor's `agent` CLI is already installed and logged in on your machine, the builder agent may run them to get a second opinion. The tester prompt and task brief are then sent to that vendor through its CLI. The skill asks before running a panel.
 - **Credentials.** Read from an environment variable you set (`UX_STRANGER_CREDENTIALS`), used only to log into the app under test, and never written to reports.
-- **Files written.** Only in your project: `ux-stranger/map.yaml`, `ux-stranger/tasks.yaml` and `ux-stranger/reports/`. No telemetry, no network calls of its own.
+- **Files written.** Only in your project: `ux-stranger/map.yaml`, `ux-stranger/tasks.yaml`, `ux-stranger/positioning.yaml` and `ux-stranger/reports/`. No telemetry, no network calls of its own.
 
 ## Safety
 
@@ -140,9 +143,12 @@ An LLM is not a person. It can fail where humans wouldn't (tiny click targets, o
 agents/ux-tester.md      Plugin copy of the Claude tester (generated)
 skills/ux-stranger/         The portable skill (SKILL.md + references + templates)
   agents/                Tester definitions for Claude, Cursor, Codex + generator
+.mcp.json                Playwright MCP declaration bundled with the plugin
+scripts/check.py         Dev consistency check (JSON/YAML, generated agents, versions)
+docs/superpowers/        Design specs and implementation plans
 ```
 
-The tester prompt lives in one place: `skills/ux-stranger/references/tester-prompt.md`. After editing it, run `python3 skills/ux-stranger/agents/generate.py` to regenerate the three agent files.
+The tester prompt lives in one place: `skills/ux-stranger/references/tester-prompt.md`. After editing it, run `python3 skills/ux-stranger/agents/generate.py` to regenerate the three agent files. Before opening a PR, run `python3 scripts/check.py` (needs PyYAML and jsonschema) and `claude plugin validate .`.
 
 ## Contributing
 
@@ -154,7 +160,7 @@ Issues and PRs are welcome, especially **reports from Codex and Cursor users**, 
 
 **UX Stranger** teste l'UX de ce que ton agent de code vient de construire. Un sous-agent « naïf », sur un modèle moins puissant, essaie d'accomplir de vraies tâches d'utilisateur dans un navigateur, sans voir le code. Il note chaque hésitation, et l'agent principal reçoit un rapport numéroté des points de friction à corriger.
 
-Ça fonctionne nativement dans Claude Code, Codex et Cursor, sans clé API. Par défaut, ça se déroule étape par étape : carte du site → choix d'un module → tâches à approuver → test → rapport dans la conversation → correction. Il y a un mode `lite-check` pour les petits abonnements et un mode `panel` multi-modèles.
+Ça fonctionne nativement dans Claude Code, Codex et Cursor, sans clé API. Par défaut, ça se déroule étape par étape : carte du site → choix d'un module → tâches à approuver → test → rapport dans la conversation → correction. Il y a un mode `lite-check` pour les petits abonnements, un mode `panel` multi-modèles et un mode `comprehension` pour les landings et sites publics : le testeur joue les clients que *tu* veux attirer, et l'agent vérifie dans un tableau ce qu'il a compris de ton offre, puis propose des correctifs de contenu.
 
 **Projet expérimental.** Les retours sont les bienvenus dans les issues.
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 — 2026-11-09
+
+- New `comprehension` mode for landing pages and public sites: client-defined personas, first impression + free exploration, comprehension table (first glance / late / misread / missed), fit and visual-tone check, copy fixes that never invent facts. Offered automatically when the map finds public pages
+- `ux-stranger/positioning.yaml` stores the approved personas and intended message (template included)
+- New flags: `MESSAGE_MISREAD`, `MESSAGE_MISSED`, `MESSAGE_LATE`, `FIT_REJECTED`, `FIT_HESITANT`, `TONE_MISMATCH`, `JARGON`; verdict `CLEAR` / `NEEDS WORK`
+- Map modules get `kind: public | app`
+- `scripts/check.py` consistency check for contributors
+
 ## 0.1.1 — 2026-11-09
 
 - Claude Code plugin now bundles Playwright MCP (`.mcp.json`), so the tester has a browser in cloud sessions too

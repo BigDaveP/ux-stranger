@@ -1,18 +1,27 @@
 # Test modes
 
-Pick the mode from the invocation argument (`/ux-stranger`, `/ux-stranger lite-check`, `/ux-stranger panel`) or from the request wording ("quick UX check" → lite, "get a second opinion from several models" → panel). When unsure, use **standard**.
+Pick the mode from the invocation argument (`/ux-stranger`, `/ux-stranger lite-check`, `/ux-stranger panel`, `/ux-stranger comprehension`) or from the request wording ("quick UX check" → lite, "get a second opinion from several models" → panel, "is my landing page clear?", "do visitors get what we do?" → comprehension). When unsure, use **standard**.
 
-| | `lite-check` | standard (default) | `panel` |
-|---|---|---|---|
-| Purpose | Cheap smoke test on smaller plans | Normal check after a UI change | High-stakes flows, before release |
-| Tasks | max 3, primary jobs only | 3–8 | 3–8 |
-| Runs per task | 1 | 3 | 2 per tester profile (see below) |
-| Tester profiles | 1 | 1 | 2–4 (model × persona) |
-| Perception | accessibility snapshot first, screenshots only at checkpoints | screenshot every step | screenshot every step |
-| Think-aloud | compact | full | full |
-| STEP_BUDGET | `optimal_steps × 2` | `max(optimal × 3, optimal + 6)` | same as standard |
-| Fix cycles | 1 re-check of failed tasks | up to 3 | up to 3 |
-| Verdict labels | `LITE OK` / `NEEDS WORK` | `PASS` / `NEEDS WORK` | `PASS` / `NEEDS WORK` + agreement score |
+| | `lite-check` | standard (default) | `panel` | `comprehension` |
+|---|---|---|---|---|
+| Purpose | Cheap smoke test on smaller plans | Normal check after a UI change | High-stakes flows, before release | Does the site communicate the offer to the target personas? (public pages) |
+| Tasks | max 3, primary jobs only | 3–8 | 3–8 | none: first impression + free exploration |
+| Runs per task | 1 | 3 | 2 per tester profile (see below) | 1 per target persona (1–3) + optional outsider |
+| Tester profiles | 1 | 1 | 2–4 (model × persona) | 1 |
+| Perception | accessibility snapshot first, screenshots only at checkpoints | screenshot every step | screenshot every step | one screenshot for the first impression, then screenshot every step |
+| Think-aloud | compact | full | full | full (exploration only) |
+| STEP_BUDGET | `optimal_steps × 2` | `max(optimal × 3, optimal + 6)` | same as standard | 12 (outsider: 0) |
+| Fix cycles | 1 re-check of failed tasks | up to 3 | up to 3 | up to 2 |
+| Verdict labels | `LITE OK` / `NEEDS WORK` | `PASS` / `NEEDS WORK` | `PASS` / `NEEDS WORK` + agreement score | `CLEAR` / `NEEDS WORK` |
+
+Comprehension is a different kind of test: no tasks, no success check. It applies to public pages (landing, home, pricing, marketing site), not logged-in screens.
+
+## comprehension
+
+Goal: check that the site tells the people the client wants to attract what it does, for whom, the offer, the price, why to trust it and what to do next, and propose copy fixes. Full procedure: `comprehension.md`. Key rules:
+- Personas and the expected message come from the human (framing interview) or non-site documents, never from the site's copy. Flag any persona that paraphrases the site.
+- The tester brief never contains the expected message or the intended tone.
+- Tone and the optional outsider are reported but never change the verdict.
 
 ## lite-check
 
