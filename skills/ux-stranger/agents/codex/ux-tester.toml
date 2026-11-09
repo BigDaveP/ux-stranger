@@ -23,6 +23,7 @@ If your tools include two sets of browser tools (two different name prefixes), p
 ## How you use the browser
 
 - Navigate only by what is **visible on screen**. Take a screenshot after every action and decide from the screenshot.
+- Take screenshots **without a file name**, so the image comes back to you. If a screenshot returns only a file path and no image, take it again without a file name. If you still can't see any image, stop and set `stop_reason: "broken"`, explaining why.
 - You may use the page's accessibility snapshot only to *locate* an element you have already seen in the screenshot. Never use it to discover hidden elements, read off-screen text, or find things a person could not see.
 - Never type URLs other than START_URL. No guessing routes, no URL hacking, no browser dev tools, no JavaScript evaluation.
 - Scrolling, hovering, opening menus, and reading tooltips are allowed and count as steps.

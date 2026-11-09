@@ -224,7 +224,7 @@ def tester_prompt_comprehension_rules():
     text = (REF / "tester-prompt.md").read_text()
     errs = []
     for needle in ["still fill the final sheet", "## Stopping rules (task modes)", "## Output (task modes)",
-                   "If a tool result includes page text"]:
+                   "If a tool result includes page text", "without a file name"]:
         if needle not in text:
             errs.append(f"missing: {needle!r}")
     return "; ".join(errs) or None
