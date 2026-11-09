@@ -32,9 +32,11 @@ expected_message:              # never sent to the tester
   - id: private_room
     level: critical
     statement: "Salle privée jusqu'à 14 personnes"
+    source: "docs/brief.md"
   - id: price
     level: important
     statement: "Menu groupe à partir de 55 $"
+    source: "human interview 2026-11-09"   # required for factual points (price, capacity, delay, guarantee)
   - id: next_step
     level: critical
     statement: "Réserver en ligne ou appeler pour un groupe"

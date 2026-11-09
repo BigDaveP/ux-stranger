@@ -2,7 +2,13 @@
   "mcpServers": {
     "playwright": {
       "command": "npx",
-      "args": ["-y", "@playwright/mcp@latest", "--isolated"]
+      "args": [
+        "-y",
+        "@playwright/mcp@0.0.85",
+        "--isolated",
+        "--output-dir",
+        "ux-stranger/.playwright-mcp"
+      ]
     }
   }
 }

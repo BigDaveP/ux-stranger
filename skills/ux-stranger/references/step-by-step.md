@@ -23,7 +23,7 @@ Each round costs only what the human chose. The map persists, so later sessions 
 | `lite-check` / `panel` | Combine with any of the above, e.g. `/ux-stranger lite-check billing` |
 | `/ux-stranger comprehension [page]` | Comprehension mode on public pages (`comprehension.md`); uses the map's `kind: public` modules |
 
-**No human in the loop** (CI, scheduled run, automated PR pipeline): don't ask questions. Use one-shot on modules flagged `changed: true` in the map, or on all high-priority flows if git info is unavailable. State that choice at the top of the report.
+**No human in the loop** (CI, scheduled run, automated PR pipeline): don't ask questions. Use one-shot on modules flagged `changed: true` in the map, or on all high-priority flows if git info is unavailable. State that choice at the top of the report. Never draft tasks for `kind: public` modules in one-shot: run the comprehension mode on them only if `ux-stranger/positioning.yaml` has `approved: true`, otherwise skip them with the one-line note from `comprehension.md` §2.
 
 ## 1. Map the app
 

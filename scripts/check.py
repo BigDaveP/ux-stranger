@@ -191,9 +191,73 @@ def ci_rule_present():
     return None
 
 
+def unattended_rule_wired():
+    errs = []
+    for path in [SKILL / "SKILL.md", REF / "step-by-step.md"]:
+        text = path.read_text()
+        if "kind: public" not in text or "approved: true" not in text:
+            errs.append(f"{path.name} no-human rule lacks the public-module / approved positioning rule")
+    return "; ".join(errs) or None
+
+
+def mcp_pinned():
+    cfg = json.loads((REPO / ".mcp.json").read_text())["mcpServers"]["playwright"]
+    args = cfg["args"]
+    pkg = [a for a in args if a.startswith("@playwright/mcp@")]
+    errs = []
+    if not pkg or not re.fullmatch(r"@playwright/mcp@\d+\.\d+\.\d+", pkg[0]):
+        errs.append(f"Playwright MCP not pinned to an exact version: {pkg}")
+    if "--output-dir" not in args:
+        errs.append("--output-dir missing")
+    else:
+        out = args[args.index("--output-dir") + 1]
+        if not out.startswith("ux-stranger/"):
+            errs.append(f"--output-dir should live under ux-stranger/: {out}")
+    if pkg:
+        for doc in [REPO / "README.md", REF / "host-setup.md"]:
+            if "@playwright/mcp@latest" in doc.read_text():
+                errs.append(f"{doc.name} still says @latest")
+    return "; ".join(errs) or None
+
+
+def tester_prompt_comprehension_rules():
+    text = (REF / "tester-prompt.md").read_text()
+    errs = []
+    for needle in ["still fill the final sheet", "## Stopping rules (task modes)", "## Output (task modes)",
+                   "If a tool result includes page text"]:
+        if needle not in text:
+            errs.append(f"missing: {needle!r}")
+    return "; ".join(errs) or None
+
+
+def facts_from_human():
+    text = (REF / "comprehension.md").read_text()
+    if "Factual points" not in text:
+        return "comprehension.md does not require factual points (price, capacity…) to come from the human or a cited source"
+    if "55 $" in (SKILL / "templates/positioning.example.yaml").read_text() and "source:" not in (SKILL / "templates/positioning.example.yaml").read_text():
+        return "template shows a price without a source"
+    return None
+
+
+def docs_accuracy():
+    readme = (REPO / "README.md").read_text()
+    errs = []
+    if "must be named `playwright`" in readme and "plugin" not in readme.split("must be named `playwright`")[1][:200]:
+        errs.append("README says the server must be named playwright without the plugin exception")
+    if "npm" not in readme.split("## What it runs and sends")[1].split("## Safety")[0]:
+        errs.append("README 'What it runs and sends' does not mention npm")
+    if "keeps one of the two" in (REF / "host-setup.md").read_text():
+        errs.append("host-setup.md claims Claude Code dedupes the two servers")
+    for doc in [REPO / "README.md", REPO / "PRIVACY.md"]:
+        if "ux-stranger/.playwright-mcp" not in doc.read_text():
+            errs.append(f"{doc.name} does not mention ux-stranger/.playwright-mcp")
+    return "; ".join(errs) or None
+
+
 CHECKS = [json_parse, yaml_parse, agents_in_sync, files_table, versions,
           comprehension_wired, comprehension_flags, comprehension_schema,
-          positioning_template, ci_rule_present]
+          positioning_template, ci_rule_present, unattended_rule_wired, mcp_pinned,
+          tester_prompt_comprehension_rules, facts_from_human, docs_accuracy]
 
 
 def main():

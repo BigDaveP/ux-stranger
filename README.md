@@ -47,7 +47,7 @@ Flags include `TASK_FAILED`, `FALSE_SUCCESS` (the tester thinks it worked and it
 
 ## Install
 
-You need a browser MCP for the tester. [Playwright MCP](https://github.com/microsoft/playwright-mcp) works everywhere, and the server must be named `playwright`. The Claude Code plugin bundles it, so there's nothing extra to install there, cloud sessions included.
+You need a browser MCP for the tester. [Playwright MCP](https://github.com/microsoft/playwright-mcp) works everywhere, and if you configure it yourself the server must be named `playwright`. The Claude Code plugin bundles it (pinned version, files under `ux-stranger/.playwright-mcp/`), so there's nothing extra to install there, cloud sessions included.
 
 ### Claude Code (plugin: skill + sub-agent in one step)
 
@@ -116,13 +116,13 @@ Files it creates in your project: `ux-stranger/map.yaml`, `ux-stranger/tasks.yam
 
 ## What it runs and sends
 
-UX Stranger has no hooks and no scripts that run on install. It is instructions (a skill), a sub-agent definition and, in the Claude Code plugin, a declaration of Microsoft's [Playwright MCP](https://github.com/microsoft/playwright-mcp) server (`npx @playwright/mcp@latest --isolated`), which your agent starts when the plugin is enabled. When you use it:
+UX Stranger has no hooks and no scripts that run on install. It is instructions (a skill), a sub-agent definition and, in the Claude Code plugin, a declaration of Microsoft's [Playwright MCP](https://github.com/microsoft/playwright-mcp) server (`npx @playwright/mcp@0.0.85 --isolated`), which your agent starts when the plugin is enabled; `npx` downloads it from the npm registry the first time. When you use it:
 
 - **Browser.** The tester drives a browser through the Playwright MCP server (bundled with the plugin, or configured by you), against the URL **you** provide. It types only the data in the task and the test credentials you supply.
 - **Model calls.** The tester runs on your agent's own model provider (e.g. Haiku in Claude Code), through your existing plan. Nothing is sent to any other service by the plugin.
 - **Panel mode only (opt-in).** If `codex` or Cursor's `agent` CLI is already installed and logged in on your machine, the builder agent may run them to get a second opinion. The tester prompt and task brief are then sent to that vendor through its CLI. The skill asks before running a panel.
 - **Credentials.** Read from an environment variable you set (`UX_STRANGER_CREDENTIALS`), used only to log into the app under test, and never written to reports.
-- **Files written.** Only in your project: `ux-stranger/map.yaml`, `ux-stranger/tasks.yaml`, `ux-stranger/positioning.yaml` and `ux-stranger/reports/`. No telemetry, no network calls of its own.
+- **Files written.** Only in your project: `ux-stranger/map.yaml`, `ux-stranger/tasks.yaml`, `ux-stranger/positioning.yaml`, `ux-stranger/reports/`, and the browser's screenshots and page snapshots in `ux-stranger/.playwright-mcp/` (git-ignore it: it can contain on-screen data). No telemetry, no network calls of its own.
 
 ## Safety
 

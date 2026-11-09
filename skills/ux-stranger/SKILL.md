@@ -26,7 +26,7 @@ Don't test the whole app in one shot. Unless the command says `all` or no human 
 
 Commands: `/ux-stranger` (step-by-step), `/ux-stranger map` (map only), `/ux-stranger <module>` (jump to that module), `/ux-stranger all` (one-shot, no questions). Each combines with a mode: `/ux-stranger lite-check equipe`. `/ux-stranger comprehension [page]` runs the comprehension mode on public pages. In Codex the prefix is `$` instead of `/` (`$ux-stranger lite-check equipe`).
 
-With no human in the loop (CI, scheduled or PR pipeline), run one-shot on the modules changed in the branch and say so in the report.
+With no human in the loop (CI, scheduled or PR pipeline), run one-shot on the modules changed in the branch and say so in the report. Never draft tasks for `kind: public` modules in one-shot: run the comprehension mode on them only if `ux-stranger/positioning.yaml` has `approved: true`, otherwise skip them with the one-line note from `references/comprehension.md` §2.
 
 ## Modes
 
@@ -47,7 +47,7 @@ Where this file and `modes.md` differ, `modes.md` wins for the chosen mode.
 - The `ux-tester` sub-agent installed for your host (files in `agents/`). When installed as a Claude Code plugin, it may be listed as `ux-stranger:ux-tester`. If it is not installed, spawn a generic sub-agent and pass it the full contents of `references/tester-prompt.md` as its instructions.
 - Comprehension mode only: an approved `ux-stranger/positioning.yaml` (personas and expected message, built with the human the first time; template `templates/positioning.example.yaml`).
 - Test credentials if the app needs login, for a **test account only**. Read them from the environment variable named in `credentials_env` (default `UX_STRANGER_CREDENTIALS`), never from a committed file. Never write them into reports. Logging in is not the thing under test unless you say so.
-- Add `ux-stranger/reports/` and `.playwright-mcp/` (the browser server's snapshots and logs) to the project's `.gitignore`, unless the team wants reports versioned. Reports quote what the tester saw on screen, which can include real data.
+- Add `ux-stranger/reports/` and `ux-stranger/.playwright-mcp/` (the browser server's screenshots, page snapshots and logs; `.playwright-mcp/` if you configured the server yourself without `--output-dir`) to the project's `.gitignore`, unless the team wants reports versioned. Reports quote what the tester saw on screen, which can include real data.
 
 ## Workflow
 

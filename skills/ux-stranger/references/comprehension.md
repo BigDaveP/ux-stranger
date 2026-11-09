@@ -36,6 +36,7 @@ Otherwise:
    6. Optional: what must a visitor have understood when they leave? (If skipped, you draft it.)
 3. Draft **1–3 target personas**: who, situation, `arrival` (concrete: "searched 'restaurant salle privée Plateau' on Google"), `leaves_if`, `viewport` (`mobile` when that audience mostly browses on a phone, e.g. restaurants, local services).
 4. Draft the **expected message** as points, each `critical` or `important`. Defaults: what it is, for whom, the offer, price or pricing model, proof / trust, next step. Add business-specific points (e.g. "private room up to 14"), remove what doesn't apply.
+   **Factual points** (a price, a capacity, a delay, a guarantee, a number) must come from the human or a cited non-site source, with `source:` on the point. Never draft a value yourself: write the point without it ("the group price is visible") and add the question to the one-message list ("What price should visitors see for groups?").
 5. Run the guardrail (section 1).
 6. **Outsider (optional, off by default).** Offer it when the site is B2B, technical or jargon-heavy: "Add an outsider (someone outside the niche) to check that the basics are understandable? +1 short run." It only does the first impression.
 7. Show personas, points, tone and outsider choice in chat. On approval, write `ux-stranger/positioning.yaml` (template: `templates/positioning.example.yaml`) with `approved: true` and `approved_at`.
@@ -121,7 +122,7 @@ With 2+ personas, add one pair of columns per persona. With an outsider, add one
 
 One numbered fix per failing row (✅ rows get none; 🟡 on an `important` point gets one only if cheap). Each fix: severity, point and persona, evidence quote, **where** (page, area, source file), **current → proposed** text (or a move: "bring the private-room line into the hero"), and **why** in one line.
 
-- **Never invent facts.** If the fix needs information that is neither on the site nor in `positioning.yaml` (a price, a capacity, a guarantee, a delay), ask the human for it in the fix itself. Never write a placeholder or a plausible value.
+- **Never invent facts.** If the fix needs information that is neither on the site nor in `positioning.yaml` with a `source:` (a price, a capacity, a guarantee, a delay), ask the human for it in the fix itself. Never write a placeholder or a plausible value.
 - Content first. Tone issues get suggestions only ("lighter palette", "fewer animations in the hero"); no automatic redesign.
 - Keep the `brand_voice` from `positioning.yaml`.
 - Apply only the fixes the human picks.
