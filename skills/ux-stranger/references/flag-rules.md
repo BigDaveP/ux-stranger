@@ -50,9 +50,28 @@ Compute these per run from the tester JSON plus your own `verified_success`. The
 
 - **lite-check**: there is one run per task, so skip run aggregation. Only `critical` flags become findings; everything else goes under "To confirm with a standard test". In lite reports the compact steps may lack `expected`/`observed`. Base `WRONG_TURN` and `HESITATION` only on the steps that have the full fields.
 - **panel**: aggregate across tester profiles with the consensus table in `modes.md` instead of the run threshold above.
+- **comprehension**: see "Comprehension mode" below.
+
+## Comprehension mode
+
+Statuses per persona × expected point come from `comprehension.md` (✅ first_glance, 🟡 late, 🟠 misread, ❌ missed). Only target personas count; the outsider only raises `JARGON`.
+
+| Flag | Condition | Severity |
+|---|---|---|
+| `MESSAGE_MISREAD` | point is 🟠 | critical if the point is `critical`, else major |
+| `MESSAGE_MISSED` | point is ❌ | critical if the point is `critical`, else major |
+| `MESSAGE_LATE` | point is 🟡 | major if the point is `critical`, else minor |
+| `FIT_REJECTED` | target persona answers `no` to `would_take_next_step` (or to `is_it_for_me` when there is no exploration) | critical |
+| `FIT_HESITANT` | target persona ends `hesitant` | major |
+| `TONE_MISMATCH` | tone `off` (major) or `partial` (minor) | never changes the verdict |
+| `JARGON` | outsider can't say what it is, or quotes a term they don't understand | minor, informational, never changes the verdict |
+
+Aggregation: one run per persona, so every `critical` flag is a finding. With 2+ target personas, a major/minor flag raised by only one persona goes under "To confirm"; raised by 2+ personas, it is a finding. With one persona, every flag is a finding.
+
 
 ## Verdict
 
 - **PASS**: every task has success rate ≥ 2/3 and there are no critical findings.
 - **NEEDS WORK**: anything else.
 - **LITE OK** (lite-check only): no critical findings. Never report `PASS` from a lite check.
+- **CLEAR** (comprehension only): every `critical` point is ✅ or 🟡 for every target persona, and no target persona ends with `FIT_REJECTED`. A 🟠 on a `critical` point is always **NEEDS WORK**. Tone and outsider results never change the verdict.
