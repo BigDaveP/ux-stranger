@@ -47,7 +47,7 @@ Where this file and `modes.md` differ, `modes.md` wins for the chosen mode.
 - The `ux-tester` sub-agent installed for your host (files in `agents/`). When installed as a Claude Code plugin, it may be listed as `ux-stranger:ux-tester`. If it is not installed, spawn a generic sub-agent and pass it the full contents of `references/tester-prompt.md` as its instructions.
 - Comprehension mode only: an approved `ux-stranger/positioning.yaml` (personas and expected message, built with the human the first time; template `templates/positioning.example.yaml`).
 - Test credentials if the app needs login, for a **test account only**. Read them from the environment variable named in `credentials_env` (default `UX_STRANGER_CREDENTIALS`), never from a committed file. Never write them into reports. Logging in is not the thing under test unless you say so.
-- Add `ux-stranger/reports/` to the project's `.gitignore` unless the team wants reports versioned. Reports quote what the tester saw on screen, which can include real data.
+- Add `ux-stranger/reports/` and `.playwright-mcp/` (the browser server's snapshots and logs) to the project's `.gitignore`, unless the team wants reports versioned. Reports quote what the tester saw on screen, which can include real data.
 
 ## Workflow
 
