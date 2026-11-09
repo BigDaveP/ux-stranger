@@ -77,6 +77,7 @@ For each target persona × expected point:
 
 - Judge meaning, not wording: "a French bistro in the Plateau" matches "Bistro français au cœur du Plateau".
 - When unsure between two statuses, pick the worse one and say why in the evidence column.
+- **Environment artefacts are not site problems.** If the test session's network blocks outside domains (a cloud sandbox, a firewall), links to other sites will look broken to the tester. Check whether the failing URL is external and whether the session can reach it before reporting it; if it can't, list it under "Excluded" with the reason, never as a finding.
 - If phase-1 answers mention something that is only visible further down the page, the tester broke phase 1: discard that run's first-impression column, mark it "first impression invalid", and judge from exploration only.
 
 Per target persona, also:
