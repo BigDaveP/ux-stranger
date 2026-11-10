@@ -145,7 +145,6 @@ skills/ux-stranger/         The portable skill (SKILL.md + references + template
   agents/                Tester definitions for Claude, Cursor, Codex + generator
 .mcp.json                Playwright MCP declaration bundled with the plugin
 scripts/check.py         Dev consistency check (JSON/YAML, generated agents, versions)
-docs/superpowers/        Design specs and implementation plans
 ```
 
 The tester prompt lives in one place: `skills/ux-stranger/references/tester-prompt.md`. After editing it, run `python3 skills/ux-stranger/agents/generate.py` to regenerate the three agent files. Before opening a PR, run `python3 scripts/check.py` (needs PyYAML and jsonschema) and `claude plugin validate .`.
