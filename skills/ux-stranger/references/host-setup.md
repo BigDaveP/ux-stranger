@@ -9,6 +9,8 @@ claude plugin marketplace add BigDaveP/ux-stranger
 claude plugin install ux-stranger@ux-stranger
 ```
 
+The plugin also bundles Playwright MCP (`.mcp.json` at the plugin root: `npx @playwright/mcp@0.0.85 --isolated --output-dir ux-stranger/.playwright-mcp`, pinned so behaviour doesn't drift), so the browser is set up too, including in cloud sessions. If you had added your own `playwright` server before, remove it (`claude mcp remove playwright`): otherwise the tester sees two browsers' tools.
+
 ## 1. Install the skill folder
 
 | Host | Project-level | User-level |
@@ -43,15 +45,28 @@ If the tester model fails on *trivial* steps (can't click a clearly labelled but
 Playwright MCP works in all three hosts.
 
 **Claude Code**
+
+Nothing to do with the plugin install: Playwright MCP is bundled. Without the plugin (skill copied by hand):
 ```bash
-claude mcp add playwright -- npx @playwright/mcp@latest
+claude mcp add playwright -- npx @playwright/mcp@0.0.85 --isolated
 ```
+
+**Cloud and remote sessions** (Claude Code on the web, the mobile app, GitHub Actions)
+
+The container starts fresh each session, so anything you added with `claude mcp add` on your own machine is not there. Chromium is preinstalled and `npx @playwright/mcp@0.0.85` runs as is; the server only needs to be *declared*:
+- Plugin enabled in the session → nothing to do, the bundled server starts.
+- Skill only (no plugin) → add this line to the environment's **setup script** (cloud environment settings), which runs before each session:
+  ```bash
+  claude mcp add --scope user playwright -- npx -y @playwright/mcp@0.0.85 --isolated
+  ```
+  Or commit a `.mcp.json` declaring the same `playwright` server at the root of the project under test.
+- The network policy must allow the npm registry (it does by default) for `npx` to download the server.
 
 **Codex**: `~/.codex/config.toml`
 ```toml
 [mcp_servers.playwright]
 command = "npx"
-args = ["@playwright/mcp@latest"]
+args = ["@playwright/mcp@0.0.85"]
 ```
 Codex sub-agents inherit the parent session's MCP servers, sandbox and approval settings (they can't be set in the agent file). The tester file turns off the shell tool so it can only use the browser. If the browser can't start or reach `localhost`, allow network access for the session or test against a deployed preview URL.
 
@@ -59,11 +74,11 @@ Invoke the skill with `$ux-stranger` (or from `/skills`).
 
 **Cursor**: `.cursor/mcp.json`
 ```json
-{ "mcpServers": { "playwright": { "command": "npx", "args": ["@playwright/mcp@latest"] } } }
+{ "mcpServers": { "playwright": { "command": "npx", "args": ["@playwright/mcp@0.0.85"] } } }
 ```
 Local Cursor sub-agents inherit the parent's MCP servers. The tester is `readonly: true`; if its browser actions get blocked, set `readonly: false` in `.cursor/agents/ux-tester.md`. Cursor's built-in browser also works if your version exposes it to sub-agents. Invoke the skill with `/ux-stranger`.
 
-Recommended: a fresh, isolated browser profile per run (Playwright MCP `--isolated`), so a previous run's state doesn't leak into the next.
+Recommended: a fresh, isolated browser profile per run (Playwright MCP `--isolated`), so a previous run's state doesn't leak into the next, and `--output-dir ux-stranger/.playwright-mcp` so screenshots and page snapshots stay in the (git-ignored) `ux-stranger/` folder. Pin the version (`@playwright/mcp@x.y.z`): page-snapshot behaviour changes between releases.
 
 ## 4. Fallback: no custom sub-agent support
 

@@ -21,8 +21,9 @@ Each round costs only what the human chose. The map persists, so later sessions 
 | `/ux-stranger <module or flow id>` | Skip to step 3 for that module/flow (build the map first if missing) |
 | `/ux-stranger all` | One-shot: every high-priority flow, no questions (old behavior) |
 | `lite-check` / `panel` | Combine with any of the above, e.g. `/ux-stranger lite-check billing` |
+| `/ux-stranger comprehension [page]` | Comprehension mode on public pages (`comprehension.md`); uses the map's `kind: public` modules |
 
-**No human in the loop** (CI, scheduled run, automated PR pipeline): don't ask questions. Use one-shot on modules flagged `changed: true` in the map, or on all high-priority flows if git info is unavailable. State that choice at the top of the report.
+**No human in the loop** (CI, scheduled run, automated PR pipeline): don't ask questions. Use one-shot on modules flagged `changed: true` in the map, or on all high-priority flows if git info is unavailable. State that choice at the top of the report. Never draft tasks for `kind: public` modules in one-shot: run the comprehension mode on them only if `ux-stranger/positioning.yaml` has `approved: true`, otherwise skip them with the one-line note from `comprehension.md` §2.
 
 ## 1. Map the app
 
@@ -37,6 +38,7 @@ You are the builder: you may use the code here. Discovery is not the test. Keep 
    - `high`: primary job of the module, touches money, data deletion or anything irreversible, onboarding/first use, or changed in this branch.
    - `medium`: frequent secondary job.
    - `low`: rare settings and edge cases.
+7. **Kind** per module: `public` for pages reachable without login whose job is to inform or convince (home, landing, pricing, about, features), `app` for everything else.
 
 In `lite-check`, skip step 3 (code + git only).
 
@@ -64,6 +66,12 @@ Then ask, with the host's question tool if it has one (multiple-choice), otherwi
 - **Which mode?** lite-check / standard / panel. Pre-select whatever was passed in the command. Otherwise suggest lite-check for a first look and standard for changed modules.
 
 Show the cost of the choice in one line (number of tasks × runs = browser sessions) so the human picks knowingly.
+
+If the map has `kind: public` modules, add this line to the question:
+
+> Public pages found (home, pricing). I can also check whether the site communicates your offer clearly (comprehension mode, 1–3 short runs).
+
+List the actual public modules in the parentheses. If the human picks it, follow `comprehension.md` instead of steps 3–5.
 
 ## 3. Draft tasks, get approval
 

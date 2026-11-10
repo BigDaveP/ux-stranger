@@ -1,0 +1,42 @@
+# ux-stranger positioning, used by the comprehension mode.
+# Saved at <project>/ux-stranger/positioning.yaml after the framing interview.
+# Personas and the expected message come from the client (interview, brief, pitch),
+# never from the site's current copy. Unattended runs use this file only if approved: true.
+
+approved: true
+approved_at: "2026-11-09"
+sources:                       # where pre-filled answers came from; never the site copy
+  - "human interview 2026-11-09"
+  - "docs/brief.md"
+brand_voice: "chaleureux, direct, sans jargon"
+visual_tone_intended: ["chaleureux", "sobre", "appétissant"]
+
+personas:
+  - id: marc
+    description: "Marc, 38 ans, directeur des ventes, organise un souper d'affaires pour 10 personnes le mois prochain"
+    arrival: "A cherché « restaurant salle privée Plateau » sur Google et cliqué le résultat"
+    leaves_if: "Pas d'info sur les groupes ou les prix"   # never sent to the tester
+    viewport: desktop          # desktop | mobile
+
+outsider:
+  enabled: false               # first impression only; offered for B2B / technical / jargon-heavy sites
+  description: null
+
+expected_message:              # never sent to the tester
+  - id: what
+    level: critical            # critical | important
+    statement: "Bistro français sur le Plateau"
+  - id: for_whom
+    level: critical
+    statement: "Soupers entre collègues, groupes, occasions"
+  - id: private_room
+    level: critical
+    statement: "Salle privée jusqu'à 14 personnes"
+    source: "docs/brief.md"
+  - id: price
+    level: important
+    statement: "Menu groupe à partir de 55 $"
+    source: "human interview 2026-11-09"   # required for factual points (price, capacity, delay, guarantee)
+  - id: next_step
+    level: critical
+    statement: "Réserver en ligne ou appeler pour un groupe"

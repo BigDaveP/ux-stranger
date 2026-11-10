@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ux-stranger/comprehension-run-report",
+  "title": "UX Stranger comprehension run report",
+  "description": "Tester output when MODE is comprehension. exploration is null when STEP_BUDGET is 0 (outsider).",
+  "type": "object",
+  "required": ["mode", "persona_id", "viewport", "first_impression", "exploration", "stop_reason"],
+  "$defs": {
+    "fit": {"enum": ["yes", "hesitant", "no"]},
+    "found": {
+      "type": "object",
+      "required": ["answer", "found_at"],
+      "properties": {
+        "answer": {"type": ["string", "null"]},
+        "found_at": {"type": ["string", "null"], "description": "URL · area (hero, 3rd section, footer…), or null if not found"}
+      }
+    }
+  },
+  "properties": {
+    "mode": {"const": "comprehension"},
+    "persona_id": {"type": "string"},
+    "viewport": {"enum": ["desktop", "mobile"]},
+    "first_impression": {
+      "type": "object",
+      "required": ["what_is_it", "for_whom", "is_it_for_me", "why", "feel_words", "trust"],
+      "properties": {
+        "what_is_it": {"type": "string"},
+        "for_whom": {"type": "string"},
+        "is_it_for_me": {"$ref": "#/$defs/fit"},
+        "why": {"type": "string"},
+        "feel_words": {"type": "array", "items": {"type": "string"}, "minItems": 3, "maxItems": 3},
+        "trust": {"type": "string"}
+      }
+    },
+    "exploration": {
+      "type": ["object", "null"],
+      "required": ["steps_taken", "steps", "answers", "would_take_next_step", "why"],
+      "properties": {
+        "steps_taken": {"type": "integer", "minimum": 0},
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["n", "action", "confidence", "matched_expectation"],
+            "properties": {
+              "n": {"type": "integer", "minimum": 1},
+              "url": {"type": "string"},
+              "looking_for": {"type": "string"},
+              "expected": {"type": "string"},
+              "action": {"type": "string"},
+              "confidence": {"type": "integer", "minimum": 1, "maximum": 5},
+              "observed": {"type": "string"},
+              "matched_expectation": {"type": "boolean"},
+              "hesitation": {"type": "array", "items": {"type": "string"}},
+              "confusion": {"type": ["string", "null"]}
+            }
+          }
+        },
+        "answers": {
+          "type": "object",
+          "required": ["what_company_does", "for_whom", "offer", "price", "reassures_me", "missing", "next_step"],
+          "properties": {
+            "what_company_does": {"$ref": "#/$defs/found"},
+            "for_whom": {"$ref": "#/$defs/found"},
+            "offer": {"$ref": "#/$defs/found"},
+            "price": {"$ref": "#/$defs/found"},
+            "reassures_me": {"$ref": "#/$defs/found"},
+            "missing": {"type": ["string", "null"]},
+            "next_step": {"$ref": "#/$defs/found"}
+          }
+        },
+        "would_take_next_step": {"$ref": "#/$defs/fit"},
+        "why": {"type": "string"},
+        "other_learnings": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "stop_reason": {"enum": ["done", "budget", "stuck", "broken"]}
+  }
+}

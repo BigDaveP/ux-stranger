@@ -3,3 +3,6 @@ __pycache__/
 .DS_Store
 # If you run ux-stranger on this repo itself
 ux-stranger/reports/
+ux-stranger/.playwright-mcp/
+# Playwright MCP snapshots and console logs
+.playwright-mcp/

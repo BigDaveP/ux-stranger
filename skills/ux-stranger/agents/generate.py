@@ -4,7 +4,11 @@ prompt = (root/"references/tester-prompt.md").read_text().strip()
 desc = "Naive usability-test participant. Completes a user goal in a browser by sight only, thinking aloud, and returns a JSON run report. Used by the ux-stranger skill; never give it code or repo context."
 note = "<!-- Generated from references/tester-prompt.md — edit that file and regenerate, do not edit here. -->\n\n"
 
-tools = ",".join("mcp__playwright__"+t for t in [
+# Two prefixes: `mcp__playwright__` when the user configured the server themselves
+# (`claude mcp add playwright`), `mcp__plugin_ux-stranger_playwright__` when it comes
+# from the plugin's bundled .mcp.json (e.g. cloud sessions). Unavailable names are ignored.
+PREFIXES = ["mcp__playwright__", "mcp__plugin_ux-stranger_playwright__"]
+tools = ",".join(pre+t for pre in PREFIXES for t in [
  "browser_navigate","browser_navigate_back","browser_snapshot","browser_take_screenshot",
  "browser_click","browser_type","browser_fill_form","browser_select_option","browser_hover",
  "browser_press_key","browser_wait_for","browser_handle_dialog","browser_tabs","browser_resize"])
