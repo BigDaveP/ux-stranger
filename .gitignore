@@ -6,3 +6,7 @@ ux-stranger/reports/
 ux-stranger/.playwright-mcp/
 # Playwright MCP snapshots and console logs
 .playwright-mcp/
+
+# Local design notes (specs, plans), not part of the plugin
+docs/superpowers/
+.superpowers/
