@@ -266,10 +266,31 @@ def framing_is_light():
             errs.append(f"framing still asks: {leftover!r}")
     return "; ".join(errs) or None
 
+
+def headless_fallback():
+    hs = (REF / "host-setup.md").read_text()
+    errs = []
+    if "## 5. Fallback: no browser tool in this session" not in hs:
+        errs.append("host-setup.md lacks the headless tester fallback section")
+    else:
+        sec = hs.split("## 5. Fallback: no browser tool in this session", 1)[1]
+        for needle in ["--strict-mcp-config", "--mcp-config", "--allowedTools", "--disallowedTools", "--append-system-prompt"]:
+            if needle not in sec:
+                errs.append(f"fallback misses {needle}")
+        cfg = json.loads((REPO / ".mcp.json").read_text())["mcpServers"]["playwright"]["args"]
+        pkg = next(a for a in cfg if a.startswith("@playwright/mcp@"))
+        if pkg not in sec:
+            errs.append(f"fallback does not use the same pinned server as .mcp.json ({pkg})")
+        if "bypassPermissions" in sec and "never" not in sec.lower():
+            errs.append("fallback mentions bypassPermissions without forbidding it")
+    if "host-setup.md` §5" not in (SKILL / "SKILL.md").read_text():
+        errs.append("SKILL.md does not point to the headless fallback (host-setup.md §5)")
+    return "; ".join(errs) or None
+
 CHECKS = [json_parse, yaml_parse, agents_in_sync, files_table, versions,
           comprehension_wired, comprehension_flags, comprehension_schema,
           positioning_template, ci_rule_present, unattended_rule_wired, mcp_pinned,
-          tester_prompt_comprehension_rules, facts_from_human, docs_accuracy, framing_is_light]
+          tester_prompt_comprehension_rules, facts_from_human, docs_accuracy, framing_is_light, headless_fallback]
 
 
 def main():

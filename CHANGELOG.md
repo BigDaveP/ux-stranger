@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1 — 2026-11-10
+
+- Fallback when a session has no browser tool: each tester runs as a headless Claude Code session with its own pinned Playwright MCP and only browser tools (no new session needed)
+- Docs: a skill uploaded alone to claude.ai can't bring the browser; install the plugin
+
 ## 0.2.0 — 2026-11-09
 
 - New `comprehension` mode for landing pages and public sites: client-defined personas, first impression + free exploration, comprehension table (first glance / late / misread / missed), fit and visual-tone check, copy fixes that never invent facts. Offered automatically when the map finds public pages
