@@ -2,7 +2,7 @@
 
 *Let a stranger try your app before your users do.*
 
-![status: experimental](https://img.shields.io/badge/status-experimental-orange) ![version](https://img.shields.io/badge/version-0.2.0-blue) ![license: MIT](https://img.shields.io/badge/license-MIT-green)
+![status: experimental](https://img.shields.io/badge/status-experimental-orange) ![version](https://img.shields.io/badge/version-0.2.1-blue) ![license: MIT](https://img.shields.io/badge/license-MIT-green)
 
 > **Work in progress.** Used on real projects, but young. Expect rough edges, and please [open an issue](../../issues/new/choose) with what worked and what didn't.
 
@@ -58,7 +58,7 @@ claude plugin install ux-stranger@ux-stranger
 
 Or inside a session: `/plugin marketplace add BigDaveP/ux-stranger`, then `/plugin install ux-stranger@ux-stranger`.
 
-Claude Code on the web / cloud sessions: enable the plugin and the bundled Playwright MCP starts on its own. Using the skill without the plugin? See [Cloud and remote sessions](skills/ux-stranger/references/host-setup.md#3-give-the-tester-a-browser).
+Claude Code on the web / cloud sessions: enable the plugin and the bundled Playwright MCP starts on its own. Uploading only the skill folder to claude.ai is not enough (a skill can't declare an MCP server); if a session has no browser anyway, the skill runs each tester as a headless Claude Code session with its own browser. Using the skill without the plugin? See [Cloud and remote sessions](skills/ux-stranger/references/host-setup.md#3-give-the-tester-a-browser).
 
 ### Codex
 

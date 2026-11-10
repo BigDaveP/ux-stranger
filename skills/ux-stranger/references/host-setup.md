@@ -54,7 +54,8 @@ claude mcp add playwright -- npx @playwright/mcp@0.0.85 --isolated
 **Cloud and remote sessions** (Claude Code on the web, the mobile app, GitHub Actions)
 
 The container starts fresh each session, so anything you added with `claude mcp add` on your own machine is not there. Chromium is preinstalled and `npx @playwright/mcp@0.0.85` runs as is; the server only needs to be *declared*:
-- Plugin enabled in the session → nothing to do, the bundled server starts.
+- Plugin enabled in the session → nothing to do, the bundled server starts. Note: a skill uploaded on its own (claude.ai skills) can't declare an MCP server; install the plugin instead.
+- Session already started without it → section 5 (headless tester fallback), no restart needed.
 - Skill only (no plugin) → add this line to the environment's **setup script** (cloud environment settings), which runs before each session:
   ```bash
   claude mcp add --scope user playwright -- npx -y @playwright/mcp@0.0.85 --isolated
@@ -83,3 +84,26 @@ Recommended: a fresh, isolated browser profile per run (Playwright MCP `--isolat
 ## 4. Fallback: no custom sub-agent support
 
 Spawn any generic sub-agent (or a second session). Paste the full content of `references/tester-prompt.md` followed by the task brief. Tell it explicitly that it has no access to the repository. Results are slightly less reliable because model and tools aren't pinned, but the method still holds.
+## 5. Fallback: no browser tool in this session (Claude Code)
+
+MCP servers load when a session starts, so a session that began without Playwright MCP (skill uploaded on its own instead of the plugin, project `.mcp.json` added mid-session, server disconnected) can't get it back. Don't ask for a new session and don't build a substitute browser: run each tester as a **separate headless Claude Code session** that declares its own browser and may use **only** the browser tools. Isolation is stricter than with a sub-agent: the tester can't read files or run commands.
+
+From the project root, once per run (runs can be parallel in comprehension mode, or when tasks don't mutate shared data):
+
+```bash
+SKILL_DIR=<path to the ux-stranger skill folder>
+MCP='{"mcpServers":{"playwright":{"command":"npx","args":["-y","@playwright/mcp@0.0.85","--isolated","--output-dir","ux-stranger/.playwright-mcp"]}}}'
+TOOLS=$(printf 'mcp__playwright__%s,' browser_navigate browser_navigate_back browser_snapshot browser_take_screenshot browser_click browser_type browser_fill_form browser_select_option browser_hover browser_press_key browser_wait_for browser_handle_dialog browser_tabs browser_resize | sed 's/,$//')
+mkdir -p ux-stranger/reports/runs
+claude -p --model haiku --strict-mcp-config --mcp-config "$MCP" \
+  --allowedTools "$TOOLS" \
+  --disallowedTools "Bash,Read,Write,Edit,Glob,Grep,WebFetch,WebSearch,Agent,Task,NotebookEdit,Skill" \
+  --append-system-prompt "$(cat "$SKILL_DIR/references/tester-prompt.md")" \
+  "$BRIEF" < /dev/null > "ux-stranger/reports/runs/<run-id>.json"
+```
+
+- `$BRIEF` is the usual brief (task or comprehension), as plain text.
+- The report is the last JSON object in the output file. Extract it and validate it against the schema, exactly as with a sub-agent's report.
+- Never add `--permission-mode bypassPermissions` or `--dangerously-skip-permissions`: the allow-list above is all the tester needs, and auto mode refuses those flags.
+- `--strict-mcp-config` keeps the user's other MCP servers away from the tester.
+- For the panel mode's other vendors, keep using their own CLIs (`modes.md`).
